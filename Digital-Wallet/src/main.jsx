@@ -137,7 +137,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-import SignupPage from "./pages/SignupPage.jsx";
+import SignUpPage from "./pages/SignupPage.jsx";
 import Dashboard from "./pages/DashBoard.jsx";
 import CreateWalletPage from "./pages/CreateWalletPage.jsx";
 import WalletDetailView from "./components/WalletDetails.jsx";
@@ -159,7 +159,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <PublicRoute><Home /></PublicRoute> },
       { path: "login", element: <PublicRoute><LoginPage /></PublicRoute> },
-      { path: "signup", element: <PublicRoute><SignupPage /></PublicRoute> },
+      { path: "signup", element: <PublicRoute><SignUpPage /></PublicRoute> },
       {
         element: <PrivateRoute />,
         children: [
