@@ -137,7 +137,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-import SignUpPage from "./pages/SignupPage.jsx";
+import SignUpPage from "./pages/SignUpPage.jsx";
 import Dashboard from "./pages/DashBoard.jsx";
 import CreateWalletPage from "./pages/CreateWalletPage.jsx";
 import WalletDetailView from "./components/WalletDetails.jsx";
