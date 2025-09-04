@@ -2,7 +2,6 @@ import React, { useState , useEffect } from 'react';
 import { User, DollarSign, Wallet, AlertCircle, CheckCircle, Calendar, Shield, CreditCard, ArrowLeft, Home, LogIn, createLucideIcon } from 'lucide-react';
 import Button from './Shared/Button';
 import { Link } from 'react-router-dom';
-import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import w_service from '../appwrite/walletServices'
 import { useNavigate } from "react-router-dom"
@@ -12,11 +11,14 @@ import SelectOptions from './Shared/SelectList';
 import c_service from '../appwrite/currencyServices';
 import { Icon } from "@iconify/react";
 import { Controller , useWatch } from 'react-hook-form';
+import SuccessBadge from "../components/Shared/Toast"
 
 function CreateWalletForm ({wallet}) {
   
   const navigate = useNavigate()
   const [currencies, setCurrencies] = useState([]);
+  const [toastMessage, setToastMessage] = useState(null);
+
   
   const { register, handleSubmit, setValue, control, getValues , watch } = useForm({
     defaultValues: {
@@ -35,23 +37,41 @@ function CreateWalletForm ({wallet}) {
   const userData = useSelector((state) => state.auth.userData);
   
   const handleData = async (data) => {
-  // force attach logged-in user ID here
-  const payload = {
-    UserId: userData?.userData?.$id, // 💥 corrected nesting
-    ...data,
-    Balance: parseFloat(data.Balance) || 0, // ensure float
-  };
+  try {
+    // ✅ force attach logged-in user ID
+    const payload = {
+      UserId: userData?.userData?.$id, // 💥 corrected nesting
+      ...data,
+      Balance: parseFloat(data.Balance) || 0, // ensure float
+    };
 
-  if (wallet) {
-    const dbWallet = await w_service.UpdateWallet({
-      walletId: wallet.$id,
-      ...payload
-    });
-    if (dbWallet) navigate(`/wallet/${dbWallet.$id}`);
-  } else {
-    const dbWallet = await w_service.CreateWallet(payload);
-    // if (dbWallet) navigate(`/wallet/${dbWallet.$id}`);
-    if (dbWallet) navigate(`/dashboard`);
+    let dbWallet;
+
+    if (wallet) {
+      dbWallet = await w_service.UpdateWallet({
+        walletId: wallet.$id,
+        ...payload,
+      });
+      if (dbWallet) {
+        navigate(`/wallet/${dbWallet.$id}`);
+      }
+    } else {
+      dbWallet = await w_service.CreateWallet(payload);
+      if (dbWallet) {
+        navigate(`/dashboard`);
+        setToastMessage({ type: "success", text: "Wallet Created!" });
+        setTimeout(() => setToastMessage(null), 3000);
+      }
+    }
+  } catch (error) {
+    console.error("Error handling wallet:", error);
+    let errorMsg = "Something went wrong";
+    if (error.message.includes("Document with the requested ID already exists")) {
+    errorMsg = "Same wallet number cannot be used again please try a different one!";
+  }
+    // show toast error safely
+    setToastMessage({ type: "error", text: errorMsg });
+    setTimeout(() => setToastMessage(null), 3000);
   }
 };
 
@@ -61,7 +81,7 @@ function CreateWalletForm ({wallet}) {
           const docs = await c_service.ListCurrencies({ isActive: true });
 
           // fetch wallets of current user
-          const userWallets = await w_service.ListUserWallets({ userId: userData?.userData?.$id });
+          const userWallets = await w_service.ListUserWallets({ UserId: userData?.userData?.$id });
 
           // get all currency codes already used in wallets
           const usedCurrencyCodes = userWallets.map(w => w.CurrencyId);
@@ -236,6 +256,16 @@ function CreateWalletForm ({wallet}) {
             </Link>
         </div>
       </form>
+
+       {toastMessage && (
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        <SuccessBadge
+          message={toastMessage.text}
+          type={toastMessage.type}
+        />
+      </div>
+        )}
+
       </div>
     </div>
   );

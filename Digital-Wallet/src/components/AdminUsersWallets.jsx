@@ -197,7 +197,7 @@ const AdminUserWallets = ({ user, close }) => {
                             <button
                               onClick={() => handleStatusWallet(wallet.$id)}
                               className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 group"
-                              title="Delete wallet"
+                              title="Update status"
                             >
                               <PencilIcon className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
                             </button>
