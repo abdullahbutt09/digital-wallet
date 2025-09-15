@@ -1,132 +1,3 @@
-// import { StrictMode } from "react";
-// import { createRoot } from "react-dom/client";
-// import "./index.css";
-// import { Provider } from "react-redux";
-// import store from "./store/Store.js";
-// import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-// import App from "./App.jsx";
-// import Home from "./pages/Home.jsx";
-// import LoginPage from "./pages/LoginPage.jsx";
-// import SignupPage from "./pages/SignUpPage.jsx";
-// import Dashboard from "./pages/DashBoard.jsx";
-// import CreateWalletPage from "./pages/CreateWalletPage.jsx";
-// import WalletDetailView from "./components/WalletDetails.jsx";
-// import PrivateRoute from "./components/PrivateRoute.jsx";
-// import PublicRoute from "./components/PublicRoute.jsx";
-// import SettingsPage from "./pages/SettingsPage.jsx";
-// import NotFound from "./pages/NotFoundPage.jsx";
-// import AdminPortal from "./pages/AdminPortal.jsx";
-// import AdminLayout from "./layout/AdminLayout.jsx";
-
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <App />,
-//     children: [
-
-//       { path: "/", 
-//           element: (
-//           <PublicRoute>
-//             <Home />
-//           </PublicRoute>
-//         ) 
-//       },
-
-//       { path: "/login", 
-//         element: (
-//         <PublicRoute>
-//            <LoginPage />
-//         </PublicRoute>
-//         ),
-//       },
-
-//       { path: "/signup", 
-//         element: (
-//         <PublicRoute>
-//             <SignupPage />
-//         </PublicRoute>
-//         ), 
-//       },
-
-//       {
-//         path: "/dashboard",
-//         element: (
-//           <PrivateRoute>
-//             <Dashboard />
-//           </PrivateRoute>
-//         ),
-//       },
-
-//       {
-//         path: "/create-wallet",
-//         element: (
-//           <PrivateRoute>
-//             <CreateWalletPage />
-//           </PrivateRoute>
-//         ),
-//       },
-
-//       {
-//         path: "/settings",
-//         element: (
-//           <PrivateRoute>
-//             <SettingsPage />
-//           </PrivateRoute>
-//         ),
-//       },
-
-//       {
-//         path: "/wallet/:walletId",
-//         element: (
-//           <PrivateRoute>
-//             <WalletDetailView />
-//           </PrivateRoute>
-//         ),
-//       },
-//     ],
-//   },
-//       // --- Admin Layout (separate, NO App.jsx so NO Header/Footer) ---
-
-//     {
-//     path: "/admin-portal",
-//     element: (
-//       <PrivateRoute adminOnly={true}>
-//         <AdminLayout />
-//       </PrivateRoute>
-//     ),
-//     children: [
-//       {
-//         index: true,
-//         element: <AdminPortal />, // default admin dashboard
-//       },
-//       {
-//         path: "users",
-//         element: <div>Users Page</div>, // later replace with real page
-//       },
-//       {
-//         path: "settings",
-//         element: <div>Admin Settings</div>,
-//       },
-//     ],
-//   },
-
-//   {path: "*", 
-//       element: (
-//         <NotFound />
-//     ) 
-//   },
-
-// ]);
-
-// createRoot(document.getElementById("root")).render(
-//   <StrictMode>
-//     <Provider store={store}>
-//       <RouterProvider router={router} />
-//     </Provider>
-//   </StrictMode>
-// );
-
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -147,9 +18,9 @@ import AdminPortal from "./pages/AdminPortal.jsx";
 import CreateCurrencyPage from "./pages/CreateCurrencyPage.jsx";
 import ViewCurrencyPage from "./pages/ViewCurrencyPage.jsx";
 import AdminLayout from "./layout/AdminLayout.jsx";
-
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import PublicRoute from "./components/PublicRoute.jsx";
+import OAuthCallback from "./components/OAuthCallback.jsx";
 
 const router = createBrowserRouter([
   // ----- Public & App Pages -----
@@ -160,6 +31,7 @@ const router = createBrowserRouter([
       { index: true, element: <PublicRoute><Home /></PublicRoute> },
       { path: "login", element: <PublicRoute><LoginPage /></PublicRoute> },
       { path: "signup", element: <PublicRoute><SignUpPage /></PublicRoute> },
+      { path: "oauth-callback", element: <OAuthCallback /> },
       {
         element: <PrivateRoute />,
         children: [

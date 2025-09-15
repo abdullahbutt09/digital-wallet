@@ -1,17 +1,4 @@
-// import React from "react";
-// import { useSelector } from "react-redux";
-// import { Navigate } from "react-router-dom";
-
-// function PrivateRoute({ children }) {
-//   const authStatus = useSelector((state) => state.auth.status);
-
-//   return authStatus ? children : <Navigate to="/login" />;
-// }
-
-// export default PrivateRoute;
-
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import authService from "../appwrite/auth"; // your Appwrite service
 

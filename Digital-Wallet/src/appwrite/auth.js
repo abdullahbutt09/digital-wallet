@@ -1,5 +1,5 @@
 import conf from "../config/ConfigID";
-import { Client, Account, ID, Databases } from "appwrite";
+import { Client, Account, ID, Databases , Permission , Role } from "appwrite";
 
 export class AuthService {
     client = new Client();
@@ -68,6 +68,75 @@ export class AuthService {
             throw error;
         }
     }
+
+    // auth.js
+        
+    async fetchUserAndEnsureInDB() {
+        console.log(">>> entering fetchUserAndEnsureInDB");
+
+        try {
+        console.log("⚡ fetchUserAndEnsureInDB CALLED");
+
+        // Get the current Appwrite user
+        const user = await this.account.get();
+        const userId = user.$id;
+        console.log("📌 Using Appwrite userId:", userId, "user:", user);
+
+        try {
+        // Check if user already exists in DB
+        const existing = await this.databases.getDocument(
+            conf.appwriteDatabaseId,
+            conf.appwriteUsersCollectionId,
+            userId
+        );
+        console.log("✅ User already exists in collection:", existing);
+        } catch (err) {
+        console.warn(
+            "⚠️ User not found in collection. Creating now...",
+            err.message
+        );
+
+        try {
+            const doc = await this.databases.createDocument(
+            conf.appwriteDatabaseId,
+            conf.appwriteUsersCollectionId,
+            userId, // use userId as document ID
+                {
+                    Name: user?.name || "Unknown",
+                    Email: user?.email || "no-email@example.com",
+                    Status: "active",
+                    CreatedAt: new Date().toISOString(),
+                }
+            );
+            console.log("🎉 User document created successfully!", doc);
+        } catch (createErr) {
+            if (createErr.code === 409) {
+            console.warn("ℹ️ User document already exists, skipping creation.");
+            } else {
+            console.error("❌ Failed to create user document:", createErr);
+            }
+        }
+    }
+
+        return user;
+        } catch (outerErr) {
+            console.error("❌ Failed in fetchUserAndEnsureInDB:", outerErr);
+            throw outerErr;
+        }
+    }
+
+    LoginWithGoogle() {
+        try {
+            this.account.createOAuth2Session(
+            "google",
+            conf.redirectSuccess,   // success redirect
+            conf.redirectFailure   // failure redirect
+            );
+        } catch (err) {
+            console.error("OAuth login failed:", err);
+        }
+    }
+
 
     async AuthLogin({ email, password }) {
         try {

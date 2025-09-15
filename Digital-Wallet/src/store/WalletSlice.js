@@ -5,9 +5,7 @@ import w_service from "../appwrite/walletServices";
 export const fetchWallets = createAsyncThunk(
   "wallets/fetchWallets",
   async (user, { rejectWithValue }) => {
-    try {
-     const userId = user?.UserId; // ✅ safe optional chaining
-     
+    try {     
       const res = await w_service.ListUserWallets(user);
       // If res has documents property (Appwrite default)
       const wallets = res.documents ? res.documents : res;

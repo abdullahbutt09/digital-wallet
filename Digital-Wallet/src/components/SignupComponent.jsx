@@ -58,6 +58,10 @@ function SignupComponent() {
           }
         }
     }
+
+  const handleLoginWithGoogle = () => {
+    authService.LoginWithGoogle(); // redirects to Google OAuth
+  };
   
   return (
     <div className="min-h-screen flex items-center justify-center p-6"> 
@@ -96,6 +100,7 @@ function SignupComponent() {
             <button 
               className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 shadow-lg hover:shadow-xl"
               title="Continue with Google"
+              onClick={handleLoginWithGoogle}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

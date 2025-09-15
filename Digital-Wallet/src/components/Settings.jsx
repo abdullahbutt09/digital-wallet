@@ -1,7 +1,6 @@
 // src/pages/Settings.jsx
 import React, { useState, useEffect } from "react";
 import authService from "../appwrite/auth";
-import LogoutButton from "../components/Header/LogoutButton"; // optional if you have a logout component
 import { useNavigate } from "react-router-dom";
 import Button from "./Shared/Button";
 import { ArrowLeft } from "lucide-react";
@@ -11,7 +10,6 @@ function Settings() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
 
   useEffect(() => {
     async function fetchUser() {
